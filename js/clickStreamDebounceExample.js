@@ -1,14 +1,13 @@
 /**
- * Keynote: An Observable (unlike a Promise) is not limited to a single return value
- */
+* Keynote: you can use the debounce function to ignore values emitted in rapid succession
+*/
 
 (function () {
     
-    let button = document.getElementById("button1");
-    let resContainer = document.getElementById("example1Res");
+    //let button = document.getElementById("button3");
+    let resContainer = document.getElementById("example4Res");
     
-    let demoData = ['Value one', 'Value two', 'Value three', 'Value four'];
-    button.onclick = demo;
+    demo();
     
     function demo() {
         
@@ -17,7 +16,8 @@
         resContainer.appendChild(ulNode);
         
         //create the observable
-        let observable = Rx.Observable.from(demoData);
+        let clickButton = document.getElementById('button4ClickMe');
+        let observable = Rx.Observable.fromEvent(clickButton, 'click').debounce(250);
         
         //create the subscription
         let subscription = observable.subscribe(
@@ -36,4 +36,3 @@
     };
 
 }());
-

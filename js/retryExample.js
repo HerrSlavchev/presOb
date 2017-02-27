@@ -1,13 +1,12 @@
 /**
- * Keynote: An Observable (unlike a Promise) is not limited to a single return value
+ * Keynote: you can use retry(n) to specify how many times to attemp executing an operation
  */
 
 (function () {
     
-    let button = document.getElementById("button1");
-    let resContainer = document.getElementById("example1Res");
+    let button = document.getElementById("button7");
+    let resContainer = document.getElementById("example7Res");
     
-    let demoData = ['Value one', 'Value two', 'Value three', 'Value four'];
     button.onclick = demo;
     
     function demo() {
@@ -16,8 +15,16 @@
         let ulNode = document.createElement('UL');
         resContainer.appendChild(ulNode);
         
+        let retries = document.getElementById("ex7retries").value;
+        let waitForIt = 2;
         //create the observable
-        let observable = Rx.Observable.from(demoData);
+        let observable = Rx.Observable.interval(300).map(function () {
+            if (waitForIt > 0) {
+                waitForIt--;
+                throw new Error('Arrr, try again!');
+            }
+            return 'Success!';
+        }).retry(retries).take(1);
         
         //create the subscription
         let subscription = observable.subscribe(
@@ -36,4 +43,3 @@
     };
 
 }());
-

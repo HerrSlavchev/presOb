@@ -1,13 +1,13 @@
-/**
- * Keynote: An Observable (unlike a Promise) is not limited to a single return value
+/* 
+* Keynote: you can set how Observable emits values
  */
 
 (function () {
     
-    let button = document.getElementById("button1");
-    let resContainer = document.getElementById("example1Res");
+    let button = document.getElementById("button2");
+    let resContainer = document.getElementById("example2Res");
     
-    let demoData = ['Value one', 'Value two', 'Value three', 'Value four'];
+    let demoData = ['Value one', 'Value two', 'Value three', 'Value four', 'Value five', 'Value six (final)'];
     button.onclick = demo;
     
     function demo() {
@@ -16,8 +16,16 @@
         let ulNode = document.createElement('UL');
         resContainer.appendChild(ulNode);
         
-        //create the observable
-        let observable = Rx.Observable.from(demoData);
+        let timegap = document.getElementById('ex2Timegap').value;
+        let takeCnt = document.getElementById('ex2Take').value;
+        //create the observable (note: check also takeUntil(condition) alternative to take(n))
+        let observable = Rx.Observable.interval(timegap).take(takeCnt).map(function (i) { 
+            if(i < demoData.length) {
+                return demoData[i];
+            } else {
+                throw new Error("Arrr, we are out of elements!");
+            }
+             });
         
         //create the subscription
         let subscription = observable.subscribe(
@@ -36,4 +44,3 @@
     };
 
 }());
-
